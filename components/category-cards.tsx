@@ -43,12 +43,12 @@ export function CategoryCards() {
 
   return (
     <>
-      <div className="bg-card rounded-lg border border-border p-3 h-full flex flex-col">
+      <div className="bg-card rounded-lg border border-primary p-3 h-full flex flex-col shadow-[0_0_16px_#5864FF]">
         <div className="flex items-center justify-between mb-3 shrink-0">
           <h2 className="text-xs font-semibold text-foreground uppercase tracking-wide">Categorias</h2>
           <button
             onClick={() => setAddModalOpen(true)}
-            className="flex items-center gap-1 text-xs font-medium text-primary hover:text-primary/80 transition-colors"
+            className="flex items-center gap-1.5 text-xs font-semibold bg-[#5864FF] text-white px-2.5 py-1.5 rounded-md shadow-[0_0_12px_#5864FF] hover:opacity-90 transition"
           >
             <Plus className="w-3.5 h-3.5" />
             Adicionar

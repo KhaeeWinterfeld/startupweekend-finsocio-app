@@ -14,4 +14,8 @@ next.user-config.*
 node_modules
 .next/
 .DS_Store
-Code&capital/
+# Do not ignore the project root folder; keep sources visible in VCS
+# (Removed erroneous ignore of the main app folder)
+.venv/
+**/__pycache__/**
+*.pyc

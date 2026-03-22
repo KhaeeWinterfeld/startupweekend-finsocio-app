@@ -7,7 +7,7 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Code&Capital — Controle Financeiro',
+  title: 'FinSócio — Controle Financeiro',
   description: 'Gerencie suas finanças pessoais e empresariais de forma simples e intuitiva.',
   generator: 'v0.app',
   icons: {
@@ -35,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body className="font-sans antialiased">
         {children}
         <Analytics />

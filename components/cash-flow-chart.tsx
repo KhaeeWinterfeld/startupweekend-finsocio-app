@@ -22,7 +22,7 @@ function formatCurrency(value: number) {
 const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: Array<{ name: string; value: number; color: string }>; label?: string }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-card border border-border rounded-xl p-3 shadow-lg text-sm">
+      <div className="bg-card border border-primary rounded-xl p-3 shadow-[0_0_12px_#5864FF] text-sm">
         <p className="font-medium text-foreground mb-2">{label}</p>
         {payload.map((entry) => (
           <div key={entry.name} className="flex items-center gap-2">
@@ -71,7 +71,7 @@ export function CashFlowChart() {
   }, [filteredTransactions, revenueCategoryIds, expenseCategoryIds])
 
   return (
-    <div className="bg-card rounded-xl border border-border p-5 h-full flex flex-col">
+    <div className="bg-card rounded-xl border border-primary p-5 h-full flex flex-col shadow-[0_0_16px_#5864FF]">
       <h2 className="text-sm font-semibold text-foreground mb-4 shrink-0">Fluxo de Caixa</h2>
       {data.length === 0 ? (
         <div className="flex-1 flex items-center justify-center text-muted-foreground text-sm">
@@ -81,7 +81,7 @@ export function CashFlowChart() {
         <div className="flex-1 min-h-0">
           <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} barCategoryGap="30%" barGap={4}>
-            <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--color-sidebar-border)" vertical={false} />
             <XAxis
               dataKey="month"
               tick={{ fontSize: 12, fill: "var(--color-muted-foreground)" }}

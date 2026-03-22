@@ -1,6 +1,7 @@
 "use client"
 
-import React, { createContext, useContext, useState, useCallback, useMemo } from "react"
+import React, { createContext, useContext, useState, useCallback, useMemo, useEffect } from "react"
+import { api, type BackendCategory, type BackendService, type BackendTransaction } from "./api"
 
 export type TransactionType = "PF" | "PJ"
 export type CategoryType = "expense" | "revenue"
@@ -93,6 +94,7 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
     ...DEFAULT_EXPENSE_CATEGORIES,
     ...DEFAULT_REVENUE_CATEGORIES,
   ])
+  const [servicesByCategory, setServicesByCategory] = useState<Record<string, BackendService[]>>({})
   const [filter, setFilter] = useState<FilterType>("all")
 
   const filteredTransactions = useMemo(() => {
@@ -140,30 +142,121 @@ export function FinanceProvider({ children }: { children: React.ReactNode }) {
     }, {} as Record<string, number>)
   }, [revenues])
 
-  const addTransaction = useCallback((t: Omit<Transaction, "id">) => {
-    setTransactions(prev => [
-      { ...t, id: Date.now().toString() },
-      ...prev,
-    ])
+  const loadFromBackend = useCallback(async () => {
+    try {
+      const [cats, svcs, txs] = await Promise.all([
+        api.listCategories(),
+        api.listServices(),
+        api.listTransactions(),
+      ])
+
+      const servicesMap: Record<string, BackendService[]> = {}
+      svcs.forEach(s => {
+        if (!servicesMap[s.category_id]) servicesMap[s.category_id] = []
+        servicesMap[s.category_id].push(s)
+      })
+
+      const categoryTypeMap: Record<string, CategoryType> = {}
+      txs.forEach(t => {
+        const catId = svcs.find(s => s.id === t.service_id)?.category_id
+        if (!catId) return
+        categoryTypeMap[catId] = t.is_expense ? "expense" : "revenue"
+      })
+
+      const mappedCats: CategoryDefinition[] = cats.map((c: BackendCategory) => ({
+        id: c.id,
+        name: c.name,
+        type: categoryTypeMap[c.id] || "expense",
+      }))
+
+      const mappedTxs: Transaction[] = txs.map((t: BackendTransaction) => {
+        const svc = svcs.find(s => s.id === t.service_id)
+        const catId = svc?.category_id || ""
+        const type: TransactionType = t.pjpf === "pf" || t.is_personal ? "PF" : "PJ"
+        return {
+          id: t.id,
+          categoryId: catId,
+          amount: Number(t.amount),
+          date: t.transaction_date,
+          type,
+          description: t.description || undefined,
+        }
+      })
+
+      setServicesByCategory(servicesMap)
+      setCategories(mappedCats)
+      setTransactions(mappedTxs)
+    } catch (_) {
+    }
   }, [])
 
-  const deleteTransaction = useCallback((id: string) => {
+  useEffect(() => {
+    loadFromBackend()
+  }, [loadFromBackend])
+
+  const addTransaction = useCallback(async (t: Omit<Transaction, "id">) => {
+    const cat = categories.find(c => c.id === t.categoryId)
+    if (!cat) return
+    const typeIsExpense = cat.type === "expense"
+    let svc = (servicesByCategory[t.categoryId] || [])[0]
+    if (!svc) {
+      try {
+        svc = await api.createService("Geral", t.categoryId)
+        setServicesByCategory(prev => ({ ...prev, [t.categoryId]: [svc] }))
+      } catch (_) {
+        return
+      }
+    }
+    try {
+      const created = await api.createTransaction({
+        service_id: svc.id,
+        is_expense: typeIsExpense,
+        pjpf: t.type === "PF" ? "pf" : "pj",
+        amount: t.amount,
+        description: t.description || null,
+        transaction_date: t.date,
+      })
+      setTransactions(prev => [
+        {
+          id: created.id,
+          categoryId: svc.category_id,
+          amount: Number(created.amount),
+          date: created.transaction_date,
+          type: t.type,
+          description: t.description || undefined,
+        },
+        ...prev,
+      ])
+    } catch (_) {
+    }
+  }, [categories, servicesByCategory])
+
+  const deleteTransaction = useCallback(async (id: string) => {
+    try { await api.deleteTransaction(id) } catch (_) {}
     setTransactions(prev => prev.filter(t => t.id !== id))
   }, [])
 
-  const addCategory = useCallback((name: string, type: CategoryType, budget?: number) => {
-    const newCat: CategoryDefinition = {
-      id: `custom-${Date.now()}`,
-      name,
-      type,
-      budget,
-      icon: type === "expense" ? "more" : "coins",
-      color: type === "expense" ? "slate" : "lime",
-    }
-    setCategories(prev => [...prev, newCat])
+  const addCategory = useCallback(async (name: string, type: CategoryType, budget?: number) => {
+    try {
+      const created = await api.createCategory(name)
+      const newCat: CategoryDefinition = {
+        id: created.id,
+        name: created.name,
+        type,
+        budget,
+        icon: type === "expense" ? "more" : "coins",
+        color: type === "expense" ? "slate" : "lime",
+      }
+      setCategories(prev => [...prev, newCat])
+      try {
+        const svc = await api.createService("Geral", created.id)
+        setServicesByCategory(prev => ({ ...prev, [created.id]: [svc] }))
+      } catch (_) {}
+    } catch (_) {}
   }, [])
 
-  const deleteCategory = useCallback((id: string) => {
+  const deleteCategory = useCallback(async (id: string) => {
+    try { await api.deleteCategory(id) } catch (_) {}
     setCategories(prev => prev.filter(c => c.id !== id))
   }, [])
 

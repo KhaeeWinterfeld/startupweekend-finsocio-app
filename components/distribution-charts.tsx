@@ -5,13 +5,13 @@ import { useFinance } from "@/lib/finance-context"
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts"
 
 const EXPENSE_COLORS = [
-  "oklch(0.42 0.13 255)",   // primary blue
-  "oklch(0.65 0.18 30)",    // orange
-  "oklch(0.72 0.15 330)",   // pink
-  "oklch(0.72 0.18 60)",    // yellow
-  "oklch(0.55 0.15 290)",   // purple
-  "oklch(0.65 0.14 200)",   // cyan
-  "oklch(0.55 0.02 240)",   // slate
+  "oklch(0.62 0.25 300)",   
+  "oklch(0.6 0.18 60)",    
+  "oklch(0.56 0.22 300)",   
+  "oklch(0.7 0.18 60)",    
+  "oklch(0.52 0.2 300)",    
+  "oklch(0.48 0.08 260)",   
+  "oklch(0.4 0.02 260)",    
 ]
 
 const REVENUE_COLORS = [
@@ -89,8 +89,8 @@ export function DistributionCharts() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {/* Expense Distribution */}
-      <div className="bg-card rounded-lg border border-border p-4">
-        <h3 className="text-xs font-semibold text-foreground mb-1 uppercase tracking-wide">Distribuição de Despesas</h3>
+      <div className="bg-card rounded-lg border border-primary p-4 shadow-[0_0_16px_#5864FF]">
+        <h3 className="text-xs font-semibold text-foreground mb-1 tracking-wide">Distribuição de Despesas</h3>
         <p className="text-xs text-muted-foreground mb-2">
           Total: {formatCurrency(totalExpenses)}
         </p>
@@ -101,7 +101,7 @@ export function DistributionCharts() {
           </div>
         ) : (
           <div className="flex items-center gap-3">
-            <div className="w-40 h-40 shrink-0 min-w-0">
+            <div className="w-32 h-32 sm:w-40 sm:h-40 md:w-56 md:h-56 xl:w-72 xl:h-72 min-w-0">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -121,15 +121,15 @@ export function DistributionCharts() {
                 </PieChart>
               </ResponsiveContainer>
             </div>
-            <div className="flex-1 flex flex-col gap-1 min-w-0">
-              {expenseData.slice(0, 4).map((d, idx) => (
-                <div key={d.name} className="flex items-center gap-1.5">
+            <div className="flex-1 flex flex-col gap-2 min-w-0">
+              {expenseData.slice(0, 5).map((d, idx) => (
+                <div key={d.name} className="flex items-center gap-2">
                   <div
-                    className="w-2 h-2 rounded-full shrink-0"
+                    className="w-3 h-3 rounded-full shrink-0"
                     style={{ backgroundColor: EXPENSE_COLORS[idx % EXPENSE_COLORS.length] }}
                   />
-                  <span className="text-xs text-foreground truncate flex-1">{d.name}</span>
-                  <span className="text-xs text-muted-foreground shrink-0">{d.percent.toFixed(0)}%</span>
+                  <span className="text-sm text-foreground truncate flex-1">{d.name}</span>
+                  <span className="text-sm text-muted-foreground shrink-0">{d.percent.toFixed(0)}%</span>
                 </div>
               ))}
             </div>
@@ -138,8 +138,8 @@ export function DistributionCharts() {
       </div>
 
       {/* Revenue Distribution */}
-      <div className="bg-card rounded-lg border border-border p-4">
-        <h3 className="text-xs font-semibold text-foreground mb-1 uppercase tracking-wide">Distribuição de Receitas</h3>
+      <div className="bg-card rounded-lg border border-primary p-4 shadow-[0_0_16px_#5864FF]">
+        <h3 className="text-xs font-semibold text-foreground mb-1 tracking-wide">Distribuição de Receitas</h3>
         <p className="text-xs text-muted-foreground mb-2">
           Total: {formatCurrency(totalRevenue)}
         </p>
@@ -150,7 +150,7 @@ export function DistributionCharts() {
           </div>
         ) : (
           <div className="flex items-center gap-3">
-            <div className="w-40 h-40 shrink-0 min-w-0">
+            <div className="w-32 h-32 sm:w-40 sm:h-40 md:w-56 md:h-56 xl:w-72 xl:h-72 min-w-0">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -170,15 +170,15 @@ export function DistributionCharts() {
                 </PieChart>
               </ResponsiveContainer>
             </div>
-            <div className="flex-1 flex flex-col gap-1.5 min-w-0">
-              {revenueData.slice(0, 4).map((d, idx) => (
-                <div key={d.name} className="flex items-center gap-2">
+            <div className="flex-1 flex flex-col gap-2 min-w-0">
+              {revenueData.slice(0, 5).map((d, idx) => (
+                <div key={d.name} className="flex items-center gap-2.5">
                   <div
-                    className="w-2.5 h-2.5 rounded-full shrink-0"
+                    className="w-3 h-3 rounded-full shrink-0"
                     style={{ backgroundColor: REVENUE_COLORS[idx % REVENUE_COLORS.length] }}
                   />
-                  <span className="text-xs text-foreground truncate flex-1">{d.name}</span>
-                  <span className="text-xs text-muted-foreground shrink-0">{d.percent.toFixed(0)}%</span>
+                  <span className="text-sm text-foreground truncate flex-1">{d.name}</span>
+                  <span className="text-sm text-muted-foreground shrink-0">{d.percent.toFixed(0)}%</span>
                 </div>
               ))}
             </div>

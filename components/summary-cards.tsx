@@ -45,7 +45,7 @@ export function SummaryCards() {
         return (
           <div
             key={card.label}
-            className={cn("rounded-lg border p-3 transition-all", card.className)}
+            className={cn("rounded-lg border border-primary p-3 shadow-[0_0_16px_#5864FF] transition-all", card.className)}
           >
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-medium text-muted-foreground">{card.label}</span>

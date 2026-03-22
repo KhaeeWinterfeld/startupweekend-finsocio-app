@@ -24,7 +24,7 @@ export function Navbar({ currentPage, onNavigate }: NavbarProps) {
         {/* Logo */}
         <div className="flex items-center gap-2 shrink-0">
           <Wallet className="w-5 h-5 text-primary" />
-          <span className="font-semibold text-foreground text-base tracking-tight">Code&Capital</span>
+          <span className="font-semibold text-foreground text-base tracking-tight">FinSócio</span>
         </div>
 
         {/* Nav Links */}
@@ -56,7 +56,7 @@ export function Navbar({ currentPage, onNavigate }: NavbarProps) {
         </nav>
 
         {/* Global Filter */}
-        <div className="flex items-center bg-muted rounded-lg p-0.5 gap-0.5">
+        <div className="flex items-center bg-primary/10 rounded-lg p-0.5 gap-0.5 border border-primary shadow-[0_0_12px_#5864FF]">
           {filterOptions.map(opt => (
             <button
               key={opt.value}
@@ -64,7 +64,7 @@ export function Navbar({ currentPage, onNavigate }: NavbarProps) {
               className={cn(
                 "px-3 py-1 rounded-md text-sm font-medium transition-all",
                 filter === opt.value
-                  ? "bg-card text-foreground shadow-sm"
+                  ? "bg-[#5864FF] text-white shadow-[0_0_12px_#5864FF]"
                   : "text-muted-foreground hover:text-foreground"
               )}
             >
@@ -75,7 +75,7 @@ export function Navbar({ currentPage, onNavigate }: NavbarProps) {
       </div>
 
       {/* Mobile nav */}
-      <div className="sm:hidden flex border-t border-border">
+      <div className="sm:hidden flex border-t border-primary/40">
         <button
           onClick={() => onNavigate("dashboard")}
           className={cn(

@@ -84,7 +84,7 @@ export function ExpensesList() {
   return (
     <div className="flex flex-col gap-4">
       {/* View Mode Toggle */}
-      <div className="flex rounded-xl overflow-hidden border border-border w-fit">
+      <div className="flex rounded-xl overflow-hidden border border-primary w-fit shadow-[0_0_12px_#5864FF]">
         <button
           type="button"
           onClick={() => { setViewMode("all"); setCategoryFilter("all") }}
@@ -199,12 +199,12 @@ export function ExpensesList() {
 
       {/* Transactions List */}
       {sorted.length === 0 ? (
-        <div className="bg-card rounded-xl border border-border p-10 text-center">
+        <div className="bg-card rounded-xl border border-primary p-10 text-center shadow-[0_0_16px_#5864FF]">
           <p className="text-muted-foreground text-sm">Nenhuma transação encontrada</p>
           <p className="text-muted-foreground text-xs mt-1">Tente ajustar os filtros ou adicione uma nova transação</p>
         </div>
       ) : (
-        <div className="bg-card rounded-xl border border-border overflow-hidden">
+        <div className="bg-card rounded-xl border border-primary overflow-hidden shadow-[0_0_16px_#5864FF]">
           {sorted.map((t, i) => (
             <TransactionItem 
               key={t.id} 

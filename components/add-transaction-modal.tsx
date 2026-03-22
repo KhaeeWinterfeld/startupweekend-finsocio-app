@@ -85,7 +85,7 @@ export function AddTransactionModal({ open, onOpenChange }: AddTransactionModalP
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 animate-in fade-in duration-200" />
         <Dialog.Content
-          className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-md bg-card rounded-2xl shadow-2xl border border-border p-6 animate-in fade-in slide-in-from-bottom-4 duration-300 focus:outline-none"
+          className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-md bg-card rounded-2xl shadow-[0_0_24px_#5864FF] border border-primary p-6 animate-in fade-in slide-in-from-bottom-4 duration-300 focus:outline-none"
         >
           <div className="flex items-center justify-between mb-5">
             <Dialog.Title className="text-base font-semibold text-foreground">
@@ -99,7 +99,7 @@ export function AddTransactionModal({ open, onOpenChange }: AddTransactionModalP
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             {/* Revenue / Expense Toggle */}
-            <div className="flex rounded-xl overflow-hidden border border-border">
+            <div className="flex rounded-xl overflow-hidden border border-primary">
               <button
                 type="button"
                 onClick={() => handleTypeToggle(false)}
@@ -198,7 +198,7 @@ export function AddTransactionModal({ open, onOpenChange }: AddTransactionModalP
             {/* Type PF / PJ */}
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Origem</label>
-              <div className="flex rounded-xl overflow-hidden border border-border">
+              <div className="flex rounded-xl overflow-hidden border border-primary">
                 {(["PF", "PJ"] as TransactionType[]).map(t => (
                   <button
                     key={t}
@@ -207,7 +207,7 @@ export function AddTransactionModal({ open, onOpenChange }: AddTransactionModalP
                     className={cn(
                       "flex-1 py-2.5 text-sm font-semibold transition-colors",
                       type === t
-                        ? "bg-primary text-primary-foreground"
+                        ? "bg-[#5864FF] text-white"
                         : "bg-card text-muted-foreground hover:bg-muted"
                     )}
                   >
@@ -250,7 +250,7 @@ export function AddTransactionFAB({ onClick }: { onClick: () => void }) {
     <button
       onClick={onClick}
       aria-label="Adicionar transação"
-      className="fixed bottom-6 right-6 z-40 flex items-center gap-2 bg-primary text-primary-foreground px-5 py-3 rounded-full shadow-lg hover:bg-primary/90 active:scale-95 transition-all focus:outline-none focus:ring-2 focus:ring-ring"
+      className="fixed bottom-6 right-6 z-40 flex items-center gap-2 bg-[#5864FF] text-white px-5 py-3 rounded-full shadow-[0_0_16px_#5864FF] hover:opacity-90 active:scale-95 transition-all focus:outline-none focus:ring-2 focus:ring-[#5864FF]"
     >
       <Plus className="w-5 h-5" />
       <span className="text-sm font-semibold">Adicionar</span>
